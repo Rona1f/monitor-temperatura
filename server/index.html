@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+    <link rel="icon" href="/static/img/favicon.ico">
+    <title>Temperatura</title>
+</head>
+<body>
+    <img src="/static/img/painel.png" alt="" class="background">
+    <div id="datacenters">
+
+    
+
+    
+</div>
+
+
+    
+    
+</body>
+</html>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+  socket.on('message', (msg)=>{
+
+    console.log(msg)
+
+      if(document.getElementById(msg['dispositivo']) == null) {
+            document.getElementById('datacenters').innerHTML += "<div class='device' id='"+ msg['dispositivo'] +"'> <div class='device-content' id='"+ msg['dispositivo'] +"info'> <div class='info'> <img class='icon-info' src='static/img/termometro.png'> <span id='"+msg['dispositivo']+'t'+"'>NA</span> </div> <div class='info'> <img class='icon-info' src='static/img/gota.png'> <span id='"+msg['dispositivo']+'u'+"'>NA</span> </div> </div> <p class='device-label'>"+msg['nome_aux']
+              if(Date.now() - msg['hora'] >= 300000) {
+                document.getElementById(msg['dispositivo'] +'info').style.borderBottom = '5px solid red'
+              }
+            }
+      
+      var item = document.getElementById(msg['dispositivo']+'t')
+
+      item.textContent = ' '+msg['temperatura']+'ºC'
+
+      var item = document.getElementById(msg['dispositivo']+'u')
+      item.textContent = ' '+msg['umidade']+' %'
+
+      
+  })
+</script>
